@@ -12,7 +12,7 @@ describe('auth-model', () => {
       let users = await db('users');
       expect(users).toHaveLength(0);
 
-      await Auth.add({ username: 'Danny', password:'123' });
+      await Auth.add({ username: 'danny', password:'123' });
 
       users = await db('users');
       expect(users).toHaveLength(1);
@@ -25,8 +25,36 @@ describe('auth-model', () => {
       user = await Auth.add({ username: 'timmy', password:'abc' });
       expect(user.username).toBe('timmy');
       expect(user.password).toBe('abc');
-    
-      
+    });
+  });
+  describe('find()', () => {
+    it('should return the proper lists of users', async ()=>{
+      await Auth.add({ username: 'danny', password:'123' });
+      let users = await Auth.find();
+      expect(users).toHaveLength(1);
+      expect(users[0].username).toBe('danny');
+
+      await Auth.add({ username: 'timmy', password:'123' });
+      users = await Auth.find();
+      expect(users).toHaveLength(2);
+      expect(users[1].username).toBe('timmy');
+    });
+  });
+
+  describe('findBy()', () => {
+    it('should return the proper user by filter', async ()=>{
+      await Auth.add({ username: 'danny', password:'123' });
+      let user = await Auth.findBy({'username':'danny'}).first();
+      expect(user.username).toBe('danny');
+
+    });
+  });
+
+  describe('findById()', () => {
+    it('should return the proper user by id', async ()=>{
+      await Auth.add({ username: 'danny', password:'123' });
+      let user = await Auth.findById(1);
+      expect(user.username).toBe('danny');
     });
   });
 });
