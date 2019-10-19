@@ -9,7 +9,7 @@ router.post('/register', (req, res) => {
   let user = req.body;
   if(user.username && user.password){
 
-    const hash = bcrypt.hashSync(user.password, 14);
+    const hash = bcrypt.hashSync(user.password, 6);
     user.password = hash;
     
     Users.add(user)
